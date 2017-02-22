@@ -47,3 +47,21 @@ def add_entry_post():
     session.add(entry)
     session.commit()
     return redirect(url_for("entries"))
+
+@app.route("/entry/<id>/delete", methods=["DELETE"])
+def delete_entry(id):
+    session.execute('DELETE from entries WHERE id = id', [id])
+    session.commit()
+    return redirect(url_for("entries"))
+
+
+@app.route("/entry/<id>")
+def single_entry(id):
+    entry = session.query(Entry)
+    entry = entry.filter_by(id=id)
+    return render_template("single_entry.html",
+                           entries=entry,
+                           id=id
+                           )
+
+

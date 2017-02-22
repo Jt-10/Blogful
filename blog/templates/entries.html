@@ -14,9 +14,10 @@
     {% endif %}
     {% if has_prev %}
     <li class="next" >
-        <a href="{{ url_for('entries', page=page + 1) }}">&rarr; Older</a>
+        <a href="{{ url_for('entries', page=page - 1) }}">&rarr; Newer</a>
     </li>
     {% endif %}
 </ul>
+
 
 {% endblock %}
