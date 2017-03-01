@@ -2,8 +2,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if id=entry.id %}
-    {{ macros.render_entry(entry) }}
-{% endif %}
+{{ macros.render_entry(entry) }}
 
 {% endblock %}
