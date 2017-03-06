@@ -1,8 +1,8 @@
 from flask import render_template
 from flask import flash
 
-from flask.ext.login import login_user
-from flask.ext.login import login_required
+from flask_login import login_user, logout_user, current_user
+from flask_login import login_required
 
 from werkzeug.security import check_password_hash
 from .database import User
@@ -16,14 +16,25 @@ PAGINATE_BY = 10
 @app.route("/page/<int:page>")
 def entries(page=1):
     # Zero-indexed page
+    default_entries = 10
+    max_entries = 50
+
+    try:
+        entries_limit = int(request.args.get('limit', default_entries)) # ensures integer by eliminating floats
+        print(entries_limit)
+        assert entries_limit > 0 # guarantee positive number
+        assert entries_limit <= max_entries # eliminate numbers of entries
+    except (ValueError, AssertionError):
+        entries_limit = default_entries
+
     page_index = page - 1
 
     count = session.query(Entry).count()
 
-    start = page_index * PAGINATE_BY
-    end = start + PAGINATE_BY
+    start = page_index * entries_limit
+    end = start + entries_limit
 
-    total_pages = (count - 1) // PAGINATE_BY + 1
+    total_pages = (count - 1) // entries_limit + 1
     has_next = page_index < total_pages - 1
     has_prev = page_index > 0
 
@@ -52,6 +63,7 @@ def add_entry_post():
     entry = Entry(
         title=request.form["title"],
         content=request.form["content"],
+        author=current_user
     )
     session.add(entry)
     session.commit()
@@ -82,7 +94,7 @@ def edit_entry_post(id):
     entry = entry.filter(Entry.id==id)
     entry = entry.one()
     session.delete(entry)
-    entry = Entry(title=request.form["title"], content=request.form["content"])
+    entry = Entry(title=request.form["title"], content=request.form["content"], author=current_user)
     session.add(entry)
     session.commit()
     return redirect(url_for("entries"))
@@ -115,3 +127,8 @@ def login_post():
 
     login_user(user)
     return redirect(request.args.get('next') or url_for("entries"))
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("entries"))

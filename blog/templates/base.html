@@ -31,6 +31,11 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="{{ url_for('entries') }}">Blogful</a>
+                    <a class="navbar-brand" href="{{ url_for('entries', limit=15) }}">15 Entries</a>
+                    <a class="navbar-brand" href="{{ url_for('entries', limit=30) }}">30 Entries</a>
+                    <a class="navbar-brand" href="{{ url_for('add_entry_get') }}">Add Entry</a>
+                    <a class="navbar-brand" href="{{ url_for('login_get') }}">login</a>
+                    <a class="navbar-brand" href="{{ url_for('logout') }}">logout</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
