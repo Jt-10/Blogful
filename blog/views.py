@@ -1,8 +1,6 @@
-from flask import render_template
-from flask import flash
+from flask import render_template, flash, request, redirect, url_for
 
-from flask_login import login_user, logout_user, current_user
-from flask_login import login_required
+from flask_login import login_required, login_user, logout_user, current_user
 
 from werkzeug.security import check_password_hash
 from .database import User
@@ -55,7 +53,6 @@ def entries(page=1):
 def add_entry_get():
     return render_template("add_entry.html")
 
-from flask import request, redirect, url_for
 
 @app.route("/entry/add", methods=["POST"])
 @login_required
