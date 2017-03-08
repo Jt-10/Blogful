@@ -1,6 +1,6 @@
 import os, unittest, datetime
 
-# Configure your app to use the testing configuration
+# Configure app to use the testing configuration if another configuration is not already loaded
 if not "CONFIG_PATH" in os.environ:
     os.environ["CONFIG_PATH"] = "blog.config.TestingConfig"
 
