@@ -6,5 +6,6 @@ flask-migrate
 mistune
 psycopg2
 splinter
-geckodriver
+selenium
+
 

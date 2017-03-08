@@ -24,12 +24,6 @@ class TestViews(unittest.TestCase):
         session.add(self.user)
         session.commit()
 
-    def tearDown(self):
-        """ Test teardown """
-        session.close()
-        # Remove the tables and their data from the database
-        Base.metadata.drop_all(engine)
-
     def simulate_login(self):
         with self.client.session_transaction() as http_session:
             http_session["user_id"] = str(self.user.id)
@@ -52,6 +46,14 @@ class TestViews(unittest.TestCase):
         self.assertEqual(entry.title, "Test Entry")
         self.assertEqual(entry.content, "Test Content")
         self.assertEqual(entry.author, self.user)
+
+    def tearDown(self):
+        """ Test teardown """
+        session.close()
+        # Remove the tables and their data from the database
+        Base.metadata.drop_all(engine)
+
+
 
 
 if __name__ == "__main__":
